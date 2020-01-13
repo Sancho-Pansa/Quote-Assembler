@@ -1,5 +1,11 @@
 package com.fandom.leagueoflegends.ru.QuoteAssembly;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -10,6 +16,7 @@ import junit.framework.TestSuite;
 public class AppTest 
     extends TestCase
 {
+	private VoiceLineFormatter vlf;
     /**
      * Create the test case
      *
@@ -18,6 +25,7 @@ public class AppTest
     public AppTest( String testName )
     {
         super( testName );
+        vlf = new VoiceLineFormatter();
     }
 
     /**
@@ -33,6 +41,22 @@ public class AppTest
      */
     public void testApp()
     {
-        assertTrue( true );
+    	String result = "";
+    	try {
+			vlf.openCSV("Афелий Классический.csv");
+			result = vlf.formatCSV();
+			Writer fwriter = new FileWriter("АфелийФразы.txt");
+			BufferedWriter bw = new BufferedWriter(fwriter);
+			bw.write(result);
+			bw.flush();
+			bw.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Could not write result");
+			e.printStackTrace();
+		} 
+        assertTrue( result.length() > 0 );
     }
 }
